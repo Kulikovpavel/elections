@@ -1,0 +1,6 @@
+{{object}}
+<ul>
+{% for info in object.info_set.all %}
+    <li>{{ info.person.name }} {{ info.party }}</li>
+{% endfor %}
+</ul>
