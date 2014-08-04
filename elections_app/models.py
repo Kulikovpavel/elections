@@ -10,6 +10,9 @@ class Person(models.Model):
   def __str__(self):
     return self.name + " " + str(self.birthdate)
 
+  class Meta:
+    ordering = ('name', 'birthdate', )
+
 class Election(models.Model):
   name = models.CharField(max_length=300)
   date = models.DateField()
@@ -21,10 +24,14 @@ class Election(models.Model):
   def __str__(self):
     return self.name + " " + str(self.date)
 
+  class Meta:
+    ordering = ('date', 'name', )
+
 class Info(models.Model):
   person = models.ForeignKey(Person)
   election = models.ForeignKey(Election)
-  url = models.CharField(max_length=500)
+
+  district = models.CharField(max_length=200)
   party = models.CharField(max_length=300)
   address = models.CharField(max_length=1000)
   edu = models.CharField(max_length=200)
@@ -33,8 +40,9 @@ class Info(models.Model):
   dep = models.CharField(max_length=200)  # previous deputat status
   criminal = models.CharField(max_length=1000)
   status = models.CharField(max_length=200)
-
+  url = models.CharField(max_length=500)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
   def __str__(self):
     return str(self.person) + " " + str(self.election)
+    

@@ -1,6 +1,15 @@
-{{object}}
-<ul>
-{% for info in object.info_set.all %}
-    <li>{{ info.person.name }} {{ info.party }}</li>
-{% endfor %}
-</ul>
+<link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}TableFilter/filtergrid.css" />
+<script src="{{ STATIC_URL }}TableFilter/tablefilter_all_min.js"></script>
+
+<p><a href="{% url 'home' %}">Главная страница</a></p>
+
+<p>Ссылка на источник:<a href='{{object.url}}'>{{object}}</a></p>
+
+{% load render_table from django_tables2 %}
+{% render_table table %}
+
+
+<script>
+  var tf1 = setFilterGrid("paleblue");
+</script>

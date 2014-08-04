@@ -1,22 +1,23 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django import forms
+import django_tables2 as tables
 from django.views.generic import ListView, DetailView
 from elections_app.models import Person, Info, Election
 import json
+import codecs
+
 from datetime import datetime
 
 class LoadDataForm(forms.Form):
-    json_text = forms.CharField(widget=forms.Textarea)
+    file_field = forms.FileField()
 
 def load_data(request):
     if request.method == 'POST': # If the form has been submitted...
         # ContactForm was defined in the previous section
-        form = LoadDataForm(request.POST) # A form bound to the POST data
+        form = LoadDataForm(request.POST, request.FILES) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
-            # Process the data in form.cleaned_data
-            # ...
-            load_from_json(form.cleaned_data['json_text'])
+            load_from_json(form.cleaned_data['file_field'])
             return HttpResponseRedirect('/admin/') # Redirect after POST
     else:
         form = LoadDataForm() # An unbound form
@@ -25,8 +26,8 @@ def load_data(request):
         'form': form,
     })
 
-def load_from_json(json_text):
-  data = json.loads(json_text)
+def load_from_json(json_file):
+  data = json.loads(json_file.read().decode('utf-8'))
   for d in data:
     name = d[0]
     date = datetime.strptime(d[1], '%d.%m.%Y')
@@ -64,6 +65,7 @@ def load_from_json(json_text):
       info.dep = c[8]
       info.criminal = c[9]
       info.status = c[10]
+      info.district = c[11]
       info.save()
 
 class ElectionList(ListView):
@@ -71,7 +73,20 @@ class ElectionList(ListView):
 
 class ElectionDetail(DetailView):
     model = Election
+    def get_context_data(self, **kwargs):
+      context = super(ElectionDetail, self).get_context_data(**kwargs)
+      table = InfoTable(self.object.info_set.all())
+      table.order_by = "person"
+      tables.RequestConfig(self.request, paginate=False).configure(table)
+      context['table'] = table
+      return context
 
+class InfoTable(tables.Table):
+    class Meta:
+        model = Info
+        # add class="paleblue" to <table> tag
+        attrs = {"id": "paleblue"}
+        exclude = ("id", "election" )
 
 def home(request):
     return HttpResponse("Hello, world. You're at the poll index.")
