@@ -4,7 +4,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import scala.language.implicitConversions
-import java.io.PrintWriter
+import java.io.{PrintWriter,OutputStreamWriter}
+import java.nio.charset.StandardCharsets
 import scala.util.parsing.json.JSONArray
 import com.google.gson.GsonBuilder
 
@@ -17,22 +18,6 @@ object Parser {
     val vibLinks = doc.select(".vibLink").map(x=>(x.attr("href"), x.text))
     return vibLinks
   }
-
-  def getObj(url: String) : List[Any] = {
-    val elList = getElectionList(url).view.filter(_._2 contains "Красногорск").toList
-    val res = for (e <- elList;
-                   page = getCandidatesPage(e._1) if page._1 != "")
-                     // name, date, url, infos
-                      yield Array(e._2, page._2, e._1, getCandidatesLinks(page._1).map(getCandidateData).map(_.toArray).toArray)
-    res
-  }
-  def saveJson(obj: List[Any]) {
-    val gson = new GsonBuilder().disableHtmlEscaping().create();
-    Some(new PrintWriter("elections.json")).foreach{p =>
-      p.write(gson.toJson(obj.toArray)); p.close
-    }
-  }
-
 
   def getCandidateData(tuple: (String, String, String, String)) : List[String] = {
     val doc = Jsoup.connect(tuple._1).timeout(20000).get();
@@ -86,9 +71,26 @@ object Parser {
     step(url, 1, List[(String, String, String, String)]())
   }
 
+
+  def getObj(url: String, name_filter: String) : List[Any] = {
+    val elList = getElectionList(url).view.filter(_._2 contains name_filter).toList
+    val res = for (e <- elList;
+                   page = getCandidatesPage(e._1) if page._1 != "")
+                     // name, date, url, infos
+                      yield Array(e._2, page._2, e._1, getCandidatesLinks(page._1).map(getCandidateData).map(_.toArray).toArray)
+    res
+  }
+
+  def saveJson(obj: List[Any]) {
+    val gson = new GsonBuilder().disableHtmlEscaping().create();
+    Some(new PrintWriter("elections.json", "UTF-8")).foreach{p =>
+      p.write(gson.toJson(obj.toArray)); p.close
+    }
+  }
+
   def main(args: Array[String]) {
     val url = "http://www.moscow_reg.vybory.izbirkom.ru/region/region/moscow_reg"
-    val obj = getObj(url)
+    val obj = getObj(url, args(0))
     saveJson(obj)
   }
 }
