@@ -11,20 +11,20 @@
 <table id="paleblue">
   <tbody>
     <tr>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th>ФИО</th>
+      <th>Дата рождения</th>
+      <th>Округ</th>
+      <th>Кем выдвинут</th>
+      <th>Место жительства</th>
+      <th>Образование</th>
+      <th>Место работы</th>
+      <th>Должность</th>
+      <th>Депутат</th>
+      <th>Судимость</th>
+      <th>Статус</th>
+      <th>Ссылка</th>
+      <th>Создан</th>
+      <th>Обновлен</th>
     </tr>
 
     {% for item in object.info_set.all %}
@@ -64,11 +64,11 @@
       btn_text: " > ",
       loader: true,
       loader_text: "Filtering data...",
-      col_0: "select",
-      col_1: "select",
+      //col_0: "select",
+      //col_1: "select",
       col_2: "select",
       // col_9: "none",
-      display_all_text: "< Show all >"
+      display_all_text: "< Показать все >"
   };
   var tf1 = setFilterGrid("paleblue", props);
 </script>
