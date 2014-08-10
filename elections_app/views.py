@@ -22,8 +22,7 @@ def load_data(request):
             if url:
               t = threading.Thread(target=load_from_url,
                                    args=(url, filter_string))
-              t.setDaemon(True)
-              t.start()                  
+              t.start()
             else:
               load_from_json(form.cleaned_data['file_field'])
             return HttpResponseRedirect('/admin/') # Redirect after POST
