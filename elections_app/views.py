@@ -5,6 +5,7 @@ import django_tables2 as tables
 from django.views.generic import ListView, DetailView
 from elections_app.models import Person, Info, Election
 from elections_app.worker import load_from_url, load_from_json
+import threading
 
 
 class LoadDataForm(forms.Form):
@@ -19,7 +20,10 @@ def load_data(request):
             url = form.cleaned_data['url']
             filter_string = form.cleaned_data['filter_string']
             if url:
-              load_from_url(url, filter_string)
+              t = threading.Thread(target=load_from_url,
+                                   args=(url, filter_string))
+              t.setDaemon(True)
+              t.start()                  
             else:
               load_from_json(form.cleaned_data['file_field'])
             return HttpResponseRedirect('/admin/') # Redirect after POST
