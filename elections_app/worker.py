@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup, SoupStrainer
 import urllib.request
 from elections_app.models import Person, Info, Election
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 
 
@@ -36,10 +36,13 @@ def load_from_url(root_url, filter_string):
       election = Election.objects.get(name=name, date=date)
       if election.url != url:
         election.url = url
-        election.save()
     except Election.DoesNotExist:
       election = Election(name=name, date=date, url=url)
-      election.save()
+
+    if filter_string == "" and datetime.now() - election.updated_at < timedelta(hours=12):
+      continue
+
+    election.save()  # to renew updated_at
 
     if not candidates_link:
       continue
