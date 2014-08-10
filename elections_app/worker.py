@@ -54,6 +54,8 @@ def load_cantidates_from_url(url, election):
     soup = get_soup(url+"&number="+str(i))
     i += 1
     table = soup.find(id="test")
+    if not table:
+      break
     trs = table.find_all("tr")
     if len(trs) == 0: break
     for tr in trs:
