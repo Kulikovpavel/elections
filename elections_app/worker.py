@@ -34,15 +34,14 @@ def load_from_url(root_url, filter_string):
 
     try:
       election = Election.objects.get(name=name, date=date)
+      if filter_string == "" and datetime.now() - election.updated_at < timedelta(hours=12):
+        continue
       if election.url != url:
         election.url = url
     except Election.DoesNotExist:
       election = Election(name=name, date=date, url=url)
-
-    if filter_string == "" and datetime.now() - election.updated_at < timedelta(hours=12):
-      continue
-
-    election.save()  # to renew updated_at
+    finally:
+      election.save()
 
     if not candidates_link:
       continue
