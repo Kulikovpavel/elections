@@ -8,7 +8,7 @@ class Person(models.Model):
   updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
-    return self.name + " " + str(self.birthdate)
+    return self.name 
 
   class Meta:
     ordering = ('name', 'birthdate', )
@@ -45,4 +45,3 @@ class Info(models.Model):
   updated_at = models.DateTimeField(auto_now=True)
   def __str__(self):
     return str(self.person) + " " + str(self.election)
-    
