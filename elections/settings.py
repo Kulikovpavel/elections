@@ -37,8 +37,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'elections_app',
-    'django_tables2',
-    'django_filters',
 )
 
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS

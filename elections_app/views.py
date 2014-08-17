@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django import forms
-import django_tables2 as tables
 from django.views.generic import ListView, DetailView
 from elections_app.models import Person, Info, Election
 from elections_app.worker import load_from_url, load_from_json
