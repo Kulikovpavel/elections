@@ -11,6 +11,7 @@ import threading
 class LoadDataForm(forms.Form):
     file_field = forms.FileField(required=False)
     url = forms.CharField(required=False)
+    html_text = forms.CharField(widget=forms.Textarea)
     filter_string = forms.CharField(required=False)
 
 def load_data(request):
@@ -18,10 +19,11 @@ def load_data(request):
         form = LoadDataForm(request.POST, request.FILES) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             url = form.cleaned_data['url']
+            html_text = form.cleaned_data['html_text']
             filter_string = form.cleaned_data['filter_string']
-            if url:
+            if url or html_text:
               t = threading.Thread(target=load_from_url,
-                                   args=(url, filter_string))
+                                   args=(url, html_text, filter_string))
               t.setDaemon(False)
               t.start()
             else:
@@ -60,6 +62,7 @@ class InfoTable(tables.Table):
 
 class InfoList(ListView):
     model = Info
+    paginate_by = 25
 
 
 def home(request):

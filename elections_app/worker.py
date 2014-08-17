@@ -14,8 +14,12 @@ def get_soup(url):
 def fix_link(url):  # some strage behavior of non-unicode character
   return url.replace("®", "&reg")
 
-def load_from_url(root_url, filter_string):
-  soup = get_soup(root_url)
+def load_from_url(root_url, html_text, filter_string):
+  if html_text:
+    html = "".join(line.strip() for line in html_text.split("\n"))
+    soup = BeautifulSoup(html, "html.parser")
+  else:
+    soup = get_soup(root_url)
   vib_links = soup.find_all('a', class_ ="vibLink")
   elections_urls = [[a.text.strip(), fix_link(a['href'])] for a in vib_links if filter_string == "" or filter_string.lower() in a.text.lower()]
   for elem in elections_urls:
