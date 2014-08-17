@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.auth.decorators import login_required
 from django.contrib import admin
-from elections_app.views import ElectionList, ElectionDetail, InfoList
+from elections_app.views import ElectionList, ElectionDetail, InfoList, PersonDetail
 
 admin.autodiscover()
 
@@ -12,6 +12,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', ElectionList.as_view(), name='home'),
+    url(r'^person/(?P<pk>[0-9]+)/$', PersonDetail.as_view(), name='person'),
     url(r'^election/(?P<pk>[0-9]+)/$', ElectionDetail.as_view(), name='election'),
     url(r'^load_data/', 'elections_app.views.load_data', name='load_data'),
     url(r'^all/', InfoList.as_view(), name='infos'),

@@ -40,30 +40,26 @@ def load_data(request):
 class ElectionList(ListView):
     model = Election
 
+
 class ElectionDetail(DetailView):
     model = Election
-    def get_context_data(self, **kwargs):
-      context = super(ElectionDetail, self).get_context_data(**kwargs)
-      table = InfoTable(self.object.info_set.all())
-      table.order_by = "person"
-      tables.RequestConfig(self.request, paginate=False).configure(table)
-      context['table'] = table
-      return context
 
-class InfoTable(tables.Table):
-    url = tables.URLColumn("url", accessor='url')
-    date = tables.Column(accessor='person.birthdate')
-    class Meta:
-        model = Info
-        # add class="paleblue" to <table> tag
-        attrs = {"id": "paleblue"}
-        exclude = ("id", "election" )
-        sequence = ("person", "date", "...")
+
+class PersonDetail(DetailView):
+    model = Person
+
 
 class InfoList(ListView):
-    model = Info
-    paginate_by = 25
+    paginate_by = 100
+    def get_queryset(self):
+        queryset = Info.objects.all()
+        if 'person_name' in self.request.GET:
+            person_name = self.request.GET['person_name']
+            queryset = queryset.filter(person__name__icontains=person_name)
+            self.paginate_by = 0
+        if 'election_name' in self.request.GET:
+            election_name = self.request.GET['election_name']
+            queryset = queryset.filter(election__name__icontains=election_name)
+            self.paginate_by = 0
 
-
-def home(request):
-    return HttpResponse("Hello, world. You're at the poll index.")
+        return queryset

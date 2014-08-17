@@ -1,46 +1,61 @@
-<link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
-<link rel="stylesheet" href="{{ STATIC_URL }}TableFilter/filtergrid.css" />
-<script src="{{ STATIC_URL }}TableFilter/tablefilter_all_min.js"></script>
+{% extends "elections_app/base.html" %}
+{% block title %}Список всех кандидатов и выборов{% endblock %}
 
-<p><a href="{% url 'home' %}">Главная страница</a></p>
+{% block content %}
+<p><a class='btn btn-primary' href="{% url 'home' %}">Главная страница</a></p>
+
+<form action="" method="get">
+  <p>Для фильта используйте несколько полей ниже, не в таблице. Тогда все данные будут на одной странице, доступные для динамического фильтра</p>
+  <label><input name='person_name' type='text' placeholder="Иванов"/>ФИО</label>
+  <label><input name='election_name' type='text' placeholder="Истринс"/>Выборы</label>
+  <input class='btn btn-success'type="submit" />
+</form>
+
 {% if is_paginated %}
-        <div class="pagination">
-            <span class="page-links">
-                {% if page_obj.has_previous %}
-                    <a href="/all?page={{ page_obj.previous_page_number }}">previous</a>
-                {% endif %}
-                <span class="page-current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
-                {% if page_obj.has_next %}
-                    <a href="/all?page={{ page_obj.next_page_number }}">next</a>
-                {% endif %}
-            </span>
-        </div>
+  <div class="pagination">
+      <span class="page-links">
+          {% if page_obj.has_previous %}
+              <a class='btn btn-info btn-xs' href="/all?page={{ page_obj.previous_page_number }}">назад</a>
+          {% endif %}
+          <span class="page-current">
+              Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+          </span>
+          {% if page_obj.has_next %}
+              <a class='btn btn-info btn-xs' href="/all?page={{ page_obj.next_page_number }}">вперед</a>
+          {% endif %}
+      </span>
+  </div>
 {% endif %}
-<table id="paleblue">
-  <tbody>
-    <tr>
-      <th>ФИО</th>
-      <th>Дата рождения</th>
-      <th>Округ</th>
-      <th>Кем выдвинут</th>
-      <th>Место жительства</th>
-      <th>Образование</th>
-      <th>Место работы</th>
-      <th>Должность</th>
-      <th>Депутат</th>
-      <th>Судимость</th>
-      <th>Статус</th>
-      <th>Ссылка</th>
-      <th>Создан</th>
-      <th>Обновлен</th>
-    </tr>
 
-    {% for item in object_list%}
+<table id="infos">
+  <thead>
+    <th>ФИО</th>
+    <th>Дата рождения</th>
+    <th>Выборы</th>
+    <th>Дата голосования</th>
+    <th>Участвовал раз</th>
+    <th>Округ</th>
+    <th>Кем выдвинут</th>
+    <th>Место жительства</th>
+    <th>Образование</th>
+    <th>Место работы</th>
+    <th>Должность</th>
+    <th>Депутат</th>
+    <th>Судимость</th>
+    <th>Статус</th>
+    <th>Ссылка</th>
+    <th>Создан</th>
+    <th>Обновлен</th>
+  </thead>
+
+  <tbody>
+    {% for item in object_list %}
     <tr>
-        <td>{{ item.person.name }}</td>
+        <td><a href='{% url 'person' item.person.id %}'>{{ item.person.name }}</a></td>
         <td>{{ item.person.birthdate }}</td>
+        <td><a href='{% url 'election' item.election.id %}'>{{ item.election.name }}</a></td>
+        <td>{{ item.election.date }}</td>
+        <td>{{ item.person.info_set.count}}</td>
         <td>{{ item.district }}</td>
         <td>{{ item.party }}</td>
         <td>{{ item.address }}</td>
@@ -61,13 +76,8 @@
 
 <script>
   var props = {
-      paging: true,
-      paging_length: 30,
       filters_row_index: 1,
       sort: true,
-       sort_config: {
-           sort_types:['String','String','US','US','US','US','US','US','US']
-       },
       remember_grid_values: true,
       alternate_rows: true,
       rows_counter: true,
@@ -77,11 +87,13 @@
       btn_text: " > ",
       loader: true,
       loader_text: "Filtering data...",
-      //col_0: "select",
-      //col_1: "select",
-      col_2: "select",
-      // col_9: "none",
-      display_all_text: "< Показать все >"
+      col_3: "select",
+      col_4: "select",
+      col_5: "select",
+      display_all_text: "< Показать все >",
+      base_path: '{{ STATIC_URL }}TableFilter/'
+
   };
-  var tf1 = setFilterGrid("paleblue", props);
+  var tf1 = setFilterGrid("infos", props);
 </script>
+{% endblock %}
