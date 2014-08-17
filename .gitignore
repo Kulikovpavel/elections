@@ -3,4 +3,4 @@ venv
 staticfiles
 *.class
 *.dump
-
+secret_key.py
