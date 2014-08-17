@@ -1,0 +1,73 @@
+<link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}TableFilter/filtergrid.css" />
+<script src="{{ STATIC_URL }}TableFilter/tablefilter_all_min.js"></script>
+
+<p><a href="{% url 'home' %}">Главная страница</a></p>
+
+<table id="paleblue">
+  <tbody>
+    <tr>
+      <th>ФИО</th>
+      <th>Дата рождения</th>
+      <th>Округ</th>
+      <th>Кем выдвинут</th>
+      <th>Место жительства</th>
+      <th>Образование</th>
+      <th>Место работы</th>
+      <th>Должность</th>
+      <th>Депутат</th>
+      <th>Судимость</th>
+      <th>Статус</th>
+      <th>Ссылка</th>
+      <th>Создан</th>
+      <th>Обновлен</th>
+    </tr>
+
+    {% for item in object_list%}
+    <tr>
+        <td>{{ item.person.name }}</td>
+        <td>{{ item.person.birthdate }}</td>
+        <td>{{ item.district }}</td>
+        <td>{{ item.party }}</td>
+        <td>{{ item.address }}</td>
+        <td>{{ item.edu }}</td>
+        <td>{{ item.firm }}</td>
+        <td>{{ item.job }}</td>
+        <td>{{ item.dep }}</td>
+        <td>{{ item.criminal }}</td>
+        <td>{{ item.status }}</td>
+        <td><a href="{{ item.url }}">link</a></td>
+
+        <td>{{ item.created_at }}</td>
+        <td>{{ item.updated_at }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script>
+  var props = {
+      paging: true,
+      paging_length: 30,
+      filters_row_index: 1,
+      sort: true,
+       sort_config: {
+           sort_types:['String','String','US','US','US','US','US','US','US']
+       },
+      remember_grid_values: true,
+      alternate_rows: true,
+      rows_counter: true,
+      rows_counter_text: "Displayed rows: ",
+      btn_reset: true,
+      btn_reset_text: "Clear",
+      btn_text: " > ",
+      loader: true,
+      loader_text: "Filtering data...",
+      //col_0: "select",
+      //col_1: "select",
+      col_2: "select",
+      // col_9: "none",
+      display_all_text: "< Показать все >"
+  };
+  var tf1 = setFilterGrid("paleblue", props);
+</script>
