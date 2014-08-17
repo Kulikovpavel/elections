@@ -1,7 +1,49 @@
-    
-    <h2>Выборы, выборы, кандидаты молодцы</h2>
-    <ul>
-        {% for election in object_list %}
-            <li><a href='{% url 'election' election.id %}'>{{ election }}</a></li>
-        {% endfor %}
-    </ul>
+<link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}TableFilter/filtergrid.css" />
+<script src="{{ STATIC_URL }}TableFilter/tablefilter_all_min.js"></script>
+
+<h2>Выборы, выборы, кандидаты молодцы</h2>
+<p><a href="{% url 'infos' %}">Все данные по всем кандидатам</a></p>
+
+<table id="paleblue">
+  <tbody>
+    <tr>
+      <th>Наименование</th>
+      <th>Дата голосования</th>
+      <th>Ссылка на официальный сайт</th>
+    </tr>
+
+    {% for election in object_list %}
+    <tr>
+        <td><a href='{% url 'election' election.id %}'>{{ election.name }}</a></td>
+        <td>{{ election.date}}</td>
+        <td><a href="{{ election.url }}">link</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script>
+  var props = {
+      filters_row_index: 1,
+      sort: true,
+       sort_config: {
+           sort_types:['String','String','US','US','US','US','US','US','US']
+       },
+      remember_grid_values: true,
+      alternate_rows: true,
+      rows_counter: true,
+      rows_counter_text: "Displayed rows: ",
+      btn_reset: true,
+      btn_reset_text: "Clear",
+      btn_text: " > ",
+      loader: true,
+      loader_text: "Filtering data...",
+      //col_0: "select",
+      //col_1: "select",
+      col_1: "select",
+      // col_9: "none",
+      display_all_text: "< Показать все >",
+  };
+  var tf1 = setFilterGrid("paleblue", props);
+</script>

@@ -58,5 +58,9 @@ class InfoTable(tables.Table):
         exclude = ("id", "election" )
         sequence = ("person", "date", "...")
 
+class InfoList(ListView):
+    model = Info
+
+
 def home(request):
     return HttpResponse("Hello, world. You're at the poll index.")

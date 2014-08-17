@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.auth.decorators import login_required
 from django.contrib import admin
-from elections_app.views import ElectionList, ElectionDetail
+from elections_app.views import ElectionList, ElectionDetail, InfoList
 
 admin.autodiscover()
 
@@ -14,5 +14,5 @@ urlpatterns = patterns('',
     url(r'^$', ElectionList.as_view(), name='home'),
     url(r'^election/(?P<pk>[0-9]+)/$', ElectionDetail.as_view(), name='election'),
     url(r'^load_data/', 'elections_app.views.load_data', name='load_data'),
-
+    url(r'^all/', InfoList.as_view(), name='infos'),
 )

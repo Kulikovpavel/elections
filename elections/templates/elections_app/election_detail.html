@@ -6,8 +6,6 @@
 
 <p>Ссылка на источник:<a href='{{object.url}}'>{{object}}</a></p>
 
-{% load render_table from django_tables2 %}
-
 <table id="paleblue">
   <tbody>
     <tr>
@@ -41,6 +39,7 @@
         <td>{{ item.criminal }}</td>
         <td>{{ item.status }}</td>
         <td><a href="{{ item.url }}">link</a></td>
+
         <td>{{ item.created_at }}</td>
         <td>{{ item.updated_at }}</td>
     </tr>
