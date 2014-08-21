@@ -10,7 +10,7 @@ import threading
 class LoadDataForm(forms.Form):
     file_field = forms.FileField(required=False)
     url = forms.CharField(required=False)
-    html_text = forms.CharField(widget=forms.Textarea)
+    html_text = forms.CharField(widget=forms.Textarea, required=False)
     filter_string = forms.CharField(required=False)
 
 def load_data(request):
