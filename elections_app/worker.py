@@ -7,7 +7,7 @@ import django
 import logging
 
 
-logger = logging.getLogger('django')
+logger = logging.getLogger('elections')
 
 def get_soup(url):
   response = urllib.request.urlopen(url)

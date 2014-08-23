@@ -137,7 +137,7 @@ LOGGING = {
         },
     },
     'loggers': {
-        'django': {
+        'elections': {
             'handlers': ['file'],
             'level': 'DEBUG',
             'propagate': True,
