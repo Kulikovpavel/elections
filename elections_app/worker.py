@@ -19,6 +19,7 @@ def fix_link(url):  # some strage behavior of non-unicode character
   return url.replace("®", "&reg")
 
 def load_from_url(root_url, html_text, filter_string):
+  logger.info('Старнует загрузка данных по выборам')
   if html_text:
     html = "".join(line.strip() for line in html_text.split("\n"))
     soup = BeautifulSoup(html, "html.parser")
