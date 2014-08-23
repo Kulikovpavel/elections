@@ -85,7 +85,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'ru-RU'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -124,3 +124,23 @@ STATICFILES_DIRS = (
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'eletions_app/static/e.log',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

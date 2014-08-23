@@ -4,6 +4,10 @@ from elections_app.models import Person, Info, Election
 from datetime import datetime, timedelta
 import json
 import django
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 def get_soup(url):
   response = urllib.request.urlopen(url)
@@ -21,8 +25,9 @@ def load_from_url(root_url, html_text, filter_string):
   else:
     soup = get_soup(root_url)
   vib_links = soup.find_all('a', class_ ="vibLink")
-  elections_urls = [[a.text.strip(), fix_link(a['href'])] for a in vib_links if filter_string == "" or filter_string.lower() in a.text.lower()]
-  for elem in elections_urls:
+  election_urls = [[a.text.strip(), fix_link(a['href'])] for a in vib_links if filter_string == "" or filter_string.lower() in a.text.lower()]
+  logger.info('Начинается загрузка, число выборов в списке - %s' % len(election_urls))
+  for elem in election_urls:
     soup = get_soup(elem[1])
 
     name = elem[0]
@@ -34,20 +39,23 @@ def load_from_url(root_url, html_text, filter_string):
       date_text = date_elem.parent.parent.parent.find_all("td")[1].text
       date = datetime.strptime(date_text, '%d.%m.%Y')
     else:
+      logger.info('Нет даты голосования для %s' % name)
       continue
 
     try:
       election = Election.objects.get(name=name, date=date)
-      if filter_string == "" and django.utils.timezone.now() - election.updated_at < timedelta(hours=12):
+      if filter_string == "" and django.utils.timezone.now() - election.updated_at < timedelta(hours=12):  # if without filter and last update too close
+        logger.info('Выборы обновлялись меньше чем 12 часов назад %s' % name)
         continue
       if election.url != url:
         election.url = url
     except Election.DoesNotExist:
       election = Election(name=name, date=date, url=url)
     finally:
-      election.save()
+      election.save()  # date update anyway
 
     if not candidates_link:
+      logger.info('Нет линка на кандидадтов %s' % name)
       continue
 
     load_cantidates_from_url(fix_link(candidates_link['href']), election)
@@ -59,13 +67,16 @@ def load_cantidates_from_url(url, election):
     i += 1
     table = soup.find(id="test")
     if not table:
+      logger.info('Нет таблицы кандидатов для %s' % election.name)
       break
     trs = table.find_all("tr")
-    if len(trs) == 0: break
+    if len(trs) == 0:
+      logger.info('Таблица кандидатов пустая %s' % election.name)
+      break
     for tr in trs:
       data = tr.find_all("td")
       name = data[1].contents[0].contents[0].text.strip()  # in nobr tag
-      print("Candidate - ", name)
+      logger.info('Загружен кандидат %s, выборы %s' % (name, election.name))
       link = fix_link(data[1].contents[0].contents[0]['href'])
       date = datetime.strptime(data[2].text, '%d.%m.%Y')
       party = data[3].text.strip()
