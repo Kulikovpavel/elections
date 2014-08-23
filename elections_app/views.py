@@ -41,7 +41,15 @@ def load_data(request):
 
 
 class ElectionList(ListView):
-    model = Election
+    paginate_by = 30
+    def get_queryset(self):
+        queryset = Election.objects.all()
+        if 'election_name' in self.request.GET:
+            election_name = self.request.GET['election_name']
+            queryset = queryset.filter(election__name__icontains=election_name)
+            self.paginate_by = 0
+
+        return queryset
 
 
 class ElectionDetail(DetailView):

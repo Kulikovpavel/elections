@@ -4,6 +4,8 @@
 {% block content %}
 <p><a class='btn btn-primary' href="{% url 'infos' %}">Все данные по всем кандидатам</a></p>
 
+{% include 'paginate.html' %}
+
 <table id="election_list" class="table">
   <thead>
     <th>Наименование</th>
