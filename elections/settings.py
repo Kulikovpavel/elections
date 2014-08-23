@@ -144,13 +144,13 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/root/elections/elections_app/static/e.log',
+            'filename': 'elections_app/static/e.log',
             'formatter': 'medium'
         },
         'django': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/root/elections/elections_app/static/django.log',
+            'filename': 'elections_app/static/django.log',
             'formatter': 'verbose'
         },
     },
