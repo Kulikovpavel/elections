@@ -60,6 +60,7 @@ def load_from_url(root_url, html_text, filter_string):
       continue
 
     load_cantidates_from_url(fix_link(candidates_link['href']), election)
+  logger.info("ЗАГРУЗКА ПРОШЛА НОРМАЛЬНО, все выборы отбработаны")
 
 def load_cantidates_from_url(url, election):
   i = 1

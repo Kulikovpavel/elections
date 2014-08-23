@@ -29,6 +29,7 @@ def load_data(request):
               load_from_json(form.cleaned_data['file_field'])
             return HttpResponseRedirect('/admin/') # Redirect after POST
     else:
+        logger.info("Открыли страницу загрузки данных")
         form = LoadDataForm() # An unbound form
 
     return render(request, 'loaddata.html', {

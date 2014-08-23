@@ -131,13 +131,13 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s\n'
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
         },
         'simple': {
-            'format': '%(levelname)s %(message)s\n'
+            'format': '%(levelname)s %(message)s'
         },
         'medium': {
-            'format': '%(levelname)s %(asctime)s %(message)s\n'
+            'format': '%(levelname)s %(asctime)s %(message)s'
         },
     },
     'handlers': {
