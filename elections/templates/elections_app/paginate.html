@@ -1,0 +1,15 @@
+{% if is_paginated %}
+  <div class="pagination">
+      <span class="page-links">
+          {% if page_obj.has_previous %}
+              <a class='btn btn-info btn-xs' href="/all?page={{ page_obj.previous_page_number }}">назад</a>
+          {% endif %}
+          <span class="page-current">
+              Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+          </span>
+          {% if page_obj.has_next %}
+              <a class='btn btn-info btn-xs' href="/all?page={{ page_obj.next_page_number }}">вперед</a>
+          {% endif %}
+      </span>
+  </div>
+{% endif %}
