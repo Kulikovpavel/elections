@@ -133,7 +133,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'eletions_app/static/e.log',
+            'filename': 'elections_app/static/e.log',
         },
     },
     'loggers': {
