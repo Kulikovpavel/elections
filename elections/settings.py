@@ -160,13 +160,10 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
-    },
-    'loggers': {
         'django': {
             'handlers': ['django'],
             'level': 'ERROR',
             'propagate': True,
         },
     },
-
 }
