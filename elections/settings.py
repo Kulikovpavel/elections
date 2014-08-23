@@ -147,6 +147,12 @@ LOGGING = {
             'filename': 'elections_app/static/e.log',
             'formatter': 'medium'
         },
+        'django': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'elections_app/static/django.log',
+            'formatter': 'verbose'
+        },
     },
     'loggers': {
         'elections': {
@@ -155,4 +161,12 @@ LOGGING = {
             'propagate': True,
         },
     },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+
 }
