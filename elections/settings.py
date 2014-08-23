@@ -33,7 +33,7 @@ except:
     from secret_key import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = True
 
@@ -125,6 +125,7 @@ STATICFILES_DIRS = (
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 
+SERVER_EMAIL = "admin@elections.istra-da.ru"
 
 LOGGING = {
     'version': 1,

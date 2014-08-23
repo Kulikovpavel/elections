@@ -46,7 +46,7 @@ class ElectionList(ListView):
         queryset = Election.objects.all()
         if 'election_name' in self.request.GET:
             election_name = self.request.GET['election_name']
-            queryset = queryset.filter(election__name__icontains=election_name)
+            queryset = queryset.filter(name__icontains=election_name)
             self.paginate_by = 0
 
         return queryset
