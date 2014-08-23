@@ -66,11 +66,13 @@ class InfoList(ListView):
         queryset = Info.objects.all()
         if 'person_name' in self.request.GET:
             person_name = self.request.GET['person_name']
-            queryset = queryset.filter(person__name__icontains=person_name)
-            self.paginate_by = 0
+            if person_name:
+                queryset = queryset.filter(person__name__icontains=person_name)
+                self.paginate_by = 0
         if 'election_name' in self.request.GET:
             election_name = self.request.GET['election_name']
-            queryset = queryset.filter(election__name__icontains=election_name)
-            self.paginate_by = 0
+            if election_name:
+                queryset = queryset.filter(election__name__icontains=election_name)
+                self.paginate_by = 0
 
         return queryset
