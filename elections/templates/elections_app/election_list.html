@@ -4,6 +4,12 @@
 {% block content %}
 <p><a class='btn btn-primary' href="{% url 'infos' %}">Все данные по всем кандидатам</a></p>
 
+<form action="" method="get">
+  <p>Для фильта используйте поле ниже, не в таблице. Тогда все данные будут на одной странице, доступные для динамического фильтра</p>
+  <label><input name='election_name' type='text' placeholder="Истринс"/>Выборы</label>
+  <input class='btn btn-success'type="submit" />
+</form>
+
 {% include "elections_app/paginate.html" %}
 
 <table id="election_list" class="table">
