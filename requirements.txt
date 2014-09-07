@@ -1,4 +1,4 @@
-git+https://github.com/django/django.git@1.7c2
+django==1.7
 astroid==1.2.0
 beautifulsoup4==4.3.2
 diff-match-patch==20110725.1
