@@ -13,5 +13,6 @@
 
 
 NGINX conf - https://github.com/Kulikovpavel/elections/blob/master/nginx.conf
+
 Upstart Gunicorn conf - https://github.com/Kulikovpavel/elections/blob/master/elections.conf
 
