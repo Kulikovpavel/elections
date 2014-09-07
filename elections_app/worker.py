@@ -68,7 +68,7 @@ def load_from_url(root_url, html_text, filter_string):
 def delete_old_infos(election):
   currentInfos = Info.objects.filter(election=election)
   for info in currentInfos:
-    if elections.updated_at - info.updated_at > timedelta(hours=12):
+    if election.updated_at - info.updated_at > timedelta(hours=12):
       logger.info('Удаляем инфу кандидата %s' % info.person)
       info.delete()
 
