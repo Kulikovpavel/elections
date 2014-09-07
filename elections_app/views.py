@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django import forms
 from django.views.generic import ListView, DetailView
+from django.contrib.auth.decorators import login_required
 from elections_app.models import Person, Info, Election
 from elections_app.worker import load_from_url, load_from_json
 import threading
