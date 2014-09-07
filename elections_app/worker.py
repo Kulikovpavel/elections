@@ -47,20 +47,30 @@ def load_from_url(root_url, html_text, filter_string):
       election = Election.objects.get(name=name, date=date)
       if filter_string == "" and django.utils.timezone.now() - election.updated_at < timedelta(hours=12):  # if without filter and last update too close
         logger.info('Выборы обновлялись меньше чем 12 часов назад %s' % name)
-        continue
+        #continue
       if election.url != url:
         election.url = url
     except Election.DoesNotExist:
       election = Election(name=name, date=date, url=url)
-    finally:
-      election.save()  # date update anyway
+      election.save()
 
     if not candidates_link:
       logger.info('Нет линка на кандидадтов %s' % name)
       continue
 
     load_cantidates_from_url(fix_link(candidates_link['href']), election)
+    election.save()  # date update anyway
+
+    delete_old_infos(election)  #sometimes TIKs change candidate date, need to remove old
+
   logger.info("ЗАГРУЗКА ПРОШЛА НОРМАЛЬНО, все выборы отбработаны")
+
+def delete_old_infos(election):
+  currentInfos = Info.objects.filter(election=election)
+  for info in currentInfos:
+    if elections.updated_at - info.updated_at > timedelta(hours=12):
+      logger.info('Удаляем инфу кандидата %s' % info.person)
+      info.delete()
 
 def load_cantidates_from_url(url, election):
   i = 1
