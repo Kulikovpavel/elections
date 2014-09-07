@@ -12,4 +12,6 @@
 * информация может отставать от официальной, пока парсер не заберет данные (неактуально для прошедших выборов)
 
 
+NGINX conf - https://github.com/Kulikovpavel/elections/blob/master/nginx.conf
+Upstart Gunicorn conf - https://github.com/Kulikovpavel/elections/blob/master/elections.conf
 
