@@ -1,6 +1,7 @@
 #Выборы и кандидаты
 =========
-http://elections.istra-da.ru/
+####http://elections.istra-da.ru/
+
 Сайт представляет из себя базу, полученную с официальных ресурсов ЦИКа (http://www.vybory.izbirkom.ru/region/izbirkom) с помощью парсинга страничек данных по выборам
 
 Плюсы:
