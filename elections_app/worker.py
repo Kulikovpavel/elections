@@ -47,7 +47,7 @@ def load_from_url(root_url, html_text, filter_string):
       election = Election.objects.get(name=name, date=date)
       if filter_string == "" and django.utils.timezone.now() - election.updated_at < timedelta(hours=12):  # if without filter and last update too close
         logger.info('Выборы обновлялись меньше чем 12 часов назад %s' % name)
-        #continue
+        continue
       if election.url != url:
         election.url = url
     except Election.DoesNotExist:

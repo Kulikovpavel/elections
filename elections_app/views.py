@@ -16,6 +16,7 @@ class LoadDataForm(forms.Form):
     html_text = forms.CharField(widget=forms.Textarea, required=False)
     filter_string = forms.CharField(required=False)
 
+@login_required(login_url='/admin')
 def load_data(request):
     if request.method == 'POST': # If the form has been submitted...
         form = LoadDataForm(request.POST, request.FILES) # A form bound to the POST data
