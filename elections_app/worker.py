@@ -127,7 +127,14 @@ def load_info(link, party, district, info):
   info.dep = res[6].strip()
   info.criminal = res[7].strip()
   info.status = res[8].strip()
+  make_exclusion(info)
   info.save()
+
+
+def make_exclusion(info):
+  if info.person.id == 30187:  # Красюков Александр Сергеевич - 1978-01-07, личная просьба убрать
+    info.criminal = ""
+
 
 def load_from_json(json_file):
   data = json.loads(json_file.read().decode('utf-8'))
